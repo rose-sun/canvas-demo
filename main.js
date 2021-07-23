@@ -24,7 +24,7 @@ function autoSetCanvasSize(canvas) {  //要传一个canvas参数进来才行
         setCanvasSize()
     }
 
-function setCanvasSize() {
+    function setCanvasSize() {
         var pageWidth = document.documentElement.clientWidth
         var pageHeight = document.documentElement.clientHeight
         canvas.width = pageWidth
@@ -52,32 +52,69 @@ function drawLine(x1, y1, x2, y2) {
 function listenToUser(canvas) {
     var using = false;  //不仅是painting,橡皮擦也用这个
     var lastPoint = { x: undefined, y: undefined }
-    canvas.onmousedown = function (aaa) {
-        using = true;   //按下鼠标就是在用，不管用什么
-        var x = aaa.clientX;
-        var y = aaa.clientY;
-        if (eraserEnabled) {   //用橡皮
-            context.clearRect(x - 5, y - 5, 10, 10)
-        } else {             //用画笔
-            lastPoint = { x: x, y: y }
-        }
-    };
-
-    canvas.onmousemove = function (aaa) {
-        if (using) {
-            var x = aaa.clientX;
-            var y = aaa.clientY;
-            if (eraserEnabled) {
+    //特性检测
+    if (document.body.ontouchstart !== undefined) {  //触屏设备
+        canvas.ontouchstart = function (aaa) {
+            console.log(aaa)
+            using = true;   //按下鼠标就是在用，不管用什么
+            var x = aaa.touches[0].clientX;
+            var y = aaa.touches[0].clientY;   //多点触控时取第一个点
+            console.log(x, y)
+            if (eraserEnabled) {   //用橡皮
                 context.clearRect(x - 5, y - 5, 10, 10)
-            } else {
-                var newPoint = { x: x, y: y }
-                drawLine(lastPoint.x, lastPoint.y, newPoint.x, newPoint.y)
-                lastPoint = newPoint  //实时更新很关键
+            } else {             //用画笔
+                lastPoint = { x: x, y: y }
             }
         }
-    };
 
-    canvas.onmouseup = function (aaa) {
-        using = false;
-    };
+        canvas.ontouchmove = function (aaa) {
+            if (using) {
+                var x = aaa.touches[0].clientX;
+                var y = aaa.touches[0].clientY;
+                if (eraserEnabled) {
+                    context.clearRect(x - 5, y - 5, 10, 10)
+                } else {
+                    var newPoint = { x: x, y: y }
+                    drawLine(lastPoint.x, lastPoint.y, newPoint.x, newPoint.y)
+                    lastPoint = newPoint  //实时更新很关键
+                }
+            }
+        }
+
+        canvas.ontouchend = function (aaa) {
+            using = false
+        }
+
+
+    } else {   //非触屏设备
+        canvas.onmousedown = function (aaa) {
+            using = true;   //按下鼠标就是在用，不管用什么
+            var x = aaa.clientX;
+            var y = aaa.clientY;
+            if (eraserEnabled) {   //用橡皮
+                context.clearRect(x - 5, y - 5, 10, 10)
+            } else {             //用画笔
+                lastPoint = { x: x, y: y }
+            }
+        };
+
+        canvas.onmousemove = function (aaa) {
+            if (using) {
+                var x = aaa.clientX;
+                var y = aaa.clientY;
+                if (eraserEnabled) {
+                    context.clearRect(x - 5, y - 5, 10, 10)
+                } else {
+                    var newPoint = { x: x, y: y }
+                    drawLine(lastPoint.x, lastPoint.y, newPoint.x, newPoint.y)
+                    lastPoint = newPoint  //实时更新很关键
+                }
+            }
+        };
+
+        canvas.onmouseup = function (aaa) {
+            using = false;
+        };
+    }
+
 }
