@@ -10,12 +10,36 @@ listenToUser(canvas)
 var eraserEnabled = false
 eraser.onclick = function () {
     eraserEnabled = true
-    actions.className = 'actions x'
+    eraser.classList.add('active')
+    brush.classList.remove('active')   //此消彼长
 }
 brush.onclick = function () {
     eraserEnabled = false
-    actions.className = 'actions'
+    brush.classList.add('active')
+    eraser.classList.remove('active')
 }
+
+red.onclick = function(){
+    context.strokeStyle = 'red'
+    red.classList.add('active')
+    blue.classList.remove('active')
+    green.classList.remove('active')
+}
+
+green.onclick = function(){
+    context.strokeStyle = 'green'
+    red.classList.remove('active')
+    blue.classList.remove('active')
+    green.classList.add('active')
+}
+
+blue.onclick = function(){
+    context.strokeStyle = 'blue'
+    red.classList.remove('active')
+    blue.classList.add('active')
+    green.classList.remove('active')
+}
+
 
 function autoSetCanvasSize(canvas) {  //要传一个canvas参数进来才行
     setCanvasSize()
@@ -34,14 +58,12 @@ function autoSetCanvasSize(canvas) {  //要传一个canvas参数进来才行
 
 function drawCircle(x, y, radius) {
     context.beginPath();  //开始画了
-    context.strokeStyle = 'black'
     context.arc(x, y, radius, 0, Math.PI * 2);
     context.fill(); //结束
 }
 
 function drawLine(x1, y1, x2, y2) {
     context.beginPath()
-    context.strokeStyle = 'black'
     context.moveTo(x1, y1)
     context.lineTo(x2, y2)
     context.lineWidth = 5
@@ -55,11 +77,9 @@ function listenToUser(canvas) {
     //特性检测
     if (document.body.ontouchstart !== undefined) {  //触屏设备
         canvas.ontouchstart = function (aaa) {
-            console.log(aaa)
             using = true;   //按下鼠标就是在用，不管用什么
             var x = aaa.touches[0].clientX;
             var y = aaa.touches[0].clientY;   //多点触控时取第一个点
-            console.log(x, y)
             if (eraserEnabled) {   //用橡皮
                 context.clearRect(x - 5, y - 5, 10, 10)
             } else {             //用画笔
