@@ -1,4 +1,7 @@
 /*********/ //1. 控制画布，自动设置画布尺寸
+document.body.ontouchstart = function(eee){
+    eee.preventDefault()  //取消事件的默认动作，防止屏幕乱动
+}
 var canvas = document.getElementById('xxx');
 var context = canvas.getContext('2d');
 var lineWidth = 3
