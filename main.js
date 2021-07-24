@@ -1,6 +1,7 @@
 /*********/ //1. 控制画布，自动设置画布尺寸
 var canvas = document.getElementById('xxx');
 var context = canvas.getContext('2d');
+var lineWidth = 3
 autoSetCanvasSize(canvas)
 
 /*********/  //2. 监听鼠标事件
@@ -18,9 +19,31 @@ brush.onclick = function () {
     brush.classList.add('active')
     eraser.classList.remove('active')
 }
+clear.onclick = function(){
+    context.clearRect(0, 0, canvas.width, canvas.height)
+}
+
+download.onclick = function(){
+    var url = canvas.toDataURL("image/png")  // 拿到地址
+    var a = document.createElement('a')
+    document.body.appendChild(a)   //把a标签放进页面
+    a.href = url
+    a.download = '我的画作'
+    a.target = '_blank'
+    a.click()   //必不可少
+}
+
+black.onclick = function(){
+    context.strokeStyle = 'red'
+    black.classList.add('active')
+    red.classList.remove('active')
+    blue.classList.remove('active')
+    green.classList.remove('active')
+}
 
 red.onclick = function(){
     context.strokeStyle = 'red'
+    black.classList.remove('active')
     red.classList.add('active')
     blue.classList.remove('active')
     green.classList.remove('active')
@@ -28,6 +51,7 @@ red.onclick = function(){
 
 green.onclick = function(){
     context.strokeStyle = 'green'
+    black.classList.remove('active')
     red.classList.remove('active')
     blue.classList.remove('active')
     green.classList.add('active')
@@ -35,11 +59,23 @@ green.onclick = function(){
 
 blue.onclick = function(){
     context.strokeStyle = 'blue'
+    black.classList.remove('active')
     red.classList.remove('active')
     blue.classList.add('active')
     green.classList.remove('active')
 }
 
+thin.onclick = function(){
+    lineWidth = 3
+    thick.classList.remove('active')
+    thin.classList.add('active')
+}
+
+thick.onclick = function(){
+    lineWidth = 6
+    thin.classList.remove('active')
+    thick.classList.add('active')
+}
 
 function autoSetCanvasSize(canvas) {  //要传一个canvas参数进来才行
     setCanvasSize()
@@ -66,7 +102,7 @@ function drawLine(x1, y1, x2, y2) {
     context.beginPath()
     context.moveTo(x1, y1)
     context.lineTo(x2, y2)
-    context.lineWidth = 5
+    context.lineWidth = lineWidth  //取当前的画笔宽度即可
     context.stroke()
     context.closePath()
 }

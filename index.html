@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable = no, initial-scale=1.0"> 
+    <meta name="viewport" content="width=device-width, user-scalable = no, initial-scale=1.0">
     <title>神笔马良</title>
     <link rel="stylesheet" href="./style.css">
 </head>
@@ -11,20 +11,33 @@
 <body>
     <canvas id="xxx" width=300 height=300></canvas>
     <div id="actions" class="actions">
-        <svg  id="eraser" class="icon" aria-hidden="true">
+        <svg id="brush" class="active icon" aria-hidden="true">
+            <use xlink:href="#icon-huabi1"></use>
+        </svg>
+        <svg id="eraser" class="icon" aria-hidden="true">
             <use xlink:href="#icon-xiangpi1"></use>
         </svg>
-        <svg id="brush" class="active icon" aria-hidden="true">
-            <use xlink:href="#icon-huabi"></use>
+        <svg id="clear" class="icon" aria-hidden="true">
+            <use xlink:href="#icon-qingpingzhongxie"></use>
+        </svg>
+        <svg id="download" class="icon" aria-hidden="true">
+            <use xlink:href="#icon-xiazai"></use>
         </svg>
     </div>
-    <div class="colors">
-        <li id=red class="red active"></li>
-        <li id=blue class="blue"></li>
-        <li id=green class="green"></li>
+    <div>
+        <ol class="colors">
+            <li id=black class="black active"></li>
+            <li id=red class="red"></li>
+            <li id=blue class="blue"></li>
+            <li id=green class="green"></li>
+        </ol>
+        <ol class="sizes">
+            <li id=thin class="thin active"></li>
+            <li id=thick class="thick"></li>
+        </ol>
     </div>
     <script src="./main.js"></script>
-    <script src="//at.alicdn.com/t/font_2696891_3luk01z8l7p.js"></script>
+    <script src="//at.alicdn.com/t/font_2696891_sghgt56kvol.js"></script>
 </body>
 
 </html>
